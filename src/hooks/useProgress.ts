@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useHydrated } from "@/lib/hydration";
 
 export interface ModuleProgress {
   completed: boolean;
@@ -31,7 +32,15 @@ function saveProgress(progress: CourseProgress) {
 }
 
 export function useProgress() {
-  const [progress, setProgress] = useState<CourseProgress>(loadProgress);
+  const isHydrated = useHydrated();
+  const [progress, setProgress] = useState<CourseProgress>({});
+
+  useEffect(() => {
+    if (isHydrated) {
+      const loaded = loadProgress();
+      setProgress(loaded);
+    }
+  }, [isHydrated]);
 
   const getModuleProgress = useCallback(
     (moduleId: string): ModuleProgress => {
@@ -124,5 +133,6 @@ export function useProgress() {
     isModuleUnlocked,
     totalXP,
     completedModules,
+    isHydrated,
   };
 }

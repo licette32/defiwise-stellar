@@ -7,11 +7,13 @@ import {
   requestAccess,
   signTransaction,
 } from "@stellar/freighter-api";
+import { useHydrated } from "@/lib/hydration";
 
 export function useStellarWallet() {
   const [address, setAddress] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(false);
+  const isHydrated = useHydrated();
 
   const checkConnection = useCallback(async () => {
     try {
@@ -29,8 +31,10 @@ export function useStellarWallet() {
   }, []);
 
   useEffect(() => {
-    checkConnection();
-  }, [checkConnection]);
+    if (isHydrated) {
+      checkConnection();
+    }
+  }, [isHydrated, checkConnection]);
 
   const connect = useCallback(async () => {
     setLoading(true);
@@ -70,5 +74,6 @@ export function useStellarWallet() {
     connect,
     disconnect,
     signTransaction,
+    isHydrated,
   };
 }

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useStellarWallet } from "./useStellarWallet";
+import { useHydrated } from "@/lib/hydration";
 import {
   getXPBalance,
   getHistoricalXP,
@@ -17,6 +18,7 @@ export interface OnChainStatus {
 }
 
 export function useStellarProgress() {
+  const isHydrated = useHydrated();
   const { address, connected } = useStellarWallet();
   const [status, setStatus] = useState<OnChainStatus>({
     xpBalance: BigInt(0),
@@ -75,10 +77,11 @@ export function useStellarProgress() {
 
   return {
     ...status,
-    connected,
+    connected: isHydrated ? connected : false,
     address,
     fetchOnChainProgress,
     checkChallengeCompleted,
     checkHasBadge,
+    isHydrated,
   };
 }

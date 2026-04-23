@@ -8,9 +8,12 @@ import { BsPatchCheckFill, BsTrophy, BsStarFill } from "react-icons/bs";
 import { OnChainStatus } from "@/components/stellar/OnChainStatus";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { totalXP, completedModules } = useProgress();
+  const { totalXP, completedModules, isHydrated } = useProgress();
   const course = courses[0];
   const totalModules = course.modules.length;
+
+  const displayXP = isHydrated ? totalXP : 0;
+  const displayCompleted = isHydrated ? completedModules : 0;
 
   return (
     <div className="flex flex-wrap lg:justify-center gap-8 max-w-[1536px] m-auto px-4 py-6">
@@ -26,7 +29,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               <BsStarFill className="text-darkOrange" size={18} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-darkGreen">{totalXP}</p>
+              <p className="text-2xl font-bold text-darkGreen">{displayXP}</p>
               <p className="text-xs text-darkGrey">XP totales</p>
             </div>
           </div>
@@ -37,7 +40,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             </div>
             <div>
               <p className="text-lg font-semibold text-darkGreen">
-                {completedModules}/{totalModules}
+                {displayCompleted}/{totalModules}
               </p>
               <p className="text-xs text-darkGrey">Módulos completados</p>
             </div>
@@ -47,7 +50,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
             <div
               className="bg-active h-2 rounded-full transition-all"
               style={{
-                width: `${totalModules > 0 ? (completedModules / totalModules) * 100 : 0}%`,
+                width: `${totalModules > 0 ? (displayCompleted / totalModules) * 100 : 0}%`,
               }}
             />
           </div>

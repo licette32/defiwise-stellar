@@ -2,9 +2,11 @@
 
 import { useEffect } from "react";
 import { useStellarProgress } from "@/hooks/useStellarProgress";
+import { useHydrated } from "@/lib/hydration";
 import { BsLink45Deg, BsArrowRepeat } from "react-icons/bs";
 
 export function OnChainStatus() {
+  const isHydrated = useHydrated();
   const {
     connected,
     xpBalance,
@@ -20,7 +22,7 @@ export function OnChainStatus() {
     }
   }, [connected, fetchOnChainProgress]);
 
-  if (!connected) {
+  if (!isHydrated || !connected) {
     return (
       <article className="p-5 border border-borderGrey/30 rounded-2xl bg-white">
         <div className="flex items-center gap-2 mb-3">
