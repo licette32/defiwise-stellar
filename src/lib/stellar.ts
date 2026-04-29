@@ -208,6 +208,16 @@ export function buildRewardQuizArgs(
   total: number,
   maxXp: number
 ): StellarSdk.xdr.ScVal[] {
+  if (!userPublicKey || userPublicKey.trim() === "") {
+    throw new Error("userPublicKey cannot be empty");
+  }
+  if (!challengeId || challengeId.trim() === "") {
+    throw new Error("challengeId cannot be empty");
+  }
+  if (!Number.isInteger(maxXp) || maxXp <= 0) {
+    throw new Error("xpAmount must be a positive integer");
+  }
+
   return [
     new StellarSdk.Address(userPublicKey).toScVal(),
     StellarSdk.nativeToScVal(challengeId, { type: "string" }),
@@ -227,6 +237,22 @@ export function buildMintBadgeArgs(
   xpEarned: number,
   quizScore: number
 ): StellarSdk.xdr.ScVal[] {
+  if (!userPublicKey || userPublicKey.trim() === "") {
+    throw new Error("userPublicKey cannot be empty");
+  }
+  if (!moduleId || moduleId.trim() === "") {
+    throw new Error("moduleId cannot be empty");
+  }
+  if (!moduleTitle || moduleTitle.trim() === "") {
+    throw new Error("moduleTitle cannot be empty");
+  }
+  if (!Number.isInteger(xpEarned) || xpEarned <= 0) {
+    throw new Error("xpAmount must be a positive integer");
+  }
+  if (quizScore < 0 || quizScore > 100) {
+    throw new Error("score must be between 0 and 100");
+  }
+
   return [
     new StellarSdk.Address(userPublicKey).toScVal(),
     StellarSdk.nativeToScVal(moduleId, { type: "string" }),
