@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useStellarWallet } from "./useStellarWallet";
 import { useHydrated } from "@/lib/hydration";
 import {
@@ -28,10 +28,23 @@ export function useStellarProgress() {
   });
 
   const fetchOnChainProgress = useCallback(async () => {
-    if (!connected || !address) return;
+    // Without a connected wallet there is no on-chain identity to query.
+    // Reset to zero so stale balances are never shown.
+    if (!connected || !address) {
+      setStatus({
+        xpBalance: BigInt(0),
+        historicalXP: BigInt(0),
+        loading: false,
+        error: null,
+      });
+      return;
+    }
 
     setStatus((prev) => ({ ...prev, loading: true, error: null }));
     try {
+      // Read the authoritative balance directly from the Soroban XP Token
+      // contract (balanceOf / historicalBalance). This is the single source
+      // of truth and cannot be tampered with from the browser.
       const [balance, historical] = await Promise.all([
         getXPBalance(address),
         getHistoricalXP(address),
@@ -50,6 +63,16 @@ export function useStellarProgress() {
       }));
     }
   }, [address, connected]);
+
+  // Automatically (re)fetch the on-chain balance whenever the wallet
+  // connection or the connected address changes. This keeps the Header and
+  // Dashboard widgets in sync with the contract without each consumer having
+  // to wire up its own effect.
+  useEffect(() => {
+    if (isHydrated && connected && address) {
+      fetchOnChainProgress();
+    }
+  }, [isHydrated, connected, address, fetchOnChainProgress]);
 
   const checkChallengeCompleted = useCallback(
     async (challengeId: string): Promise<boolean> => {
@@ -80,6 +103,8 @@ export function useStellarProgress() {
     connected: isHydrated ? connected : false,
     address,
     fetchOnChainProgress,
+    // Friendly alias used by UI widgets to manually trigger a balance refresh.
+    refresh: fetchOnChainProgress,
     checkChallengeCompleted,
     checkHasBadge,
     isHydrated,

@@ -2,6 +2,7 @@
 
 import { Course } from "@/data/courses";
 import { useProgress } from "@/hooks/useProgress";
+import { useStellarProgress } from "@/hooks/useStellarProgress";
 import { BsStarFill, BsPatchCheckFill, BsTrophy } from "react-icons/bs";
 
 interface XPSummaryProps {
@@ -13,11 +14,29 @@ export default function XPSummary({ progress, course }: XPSummaryProps) {
   const totalModules = course.modules.length;
   const maxXP = course.modules.reduce((sum, m) => sum + m.rewardXP, 0);
 
+  // Real, tamper-proof XP balance from the Soroban XP Token contract.
+  const {
+    isHydrated,
+    connected,
+    xpBalance,
+    loading: xpLoading,
+  } = useStellarProgress();
+  const displayXP = isHydrated && connected ? xpBalance.toString() : "0";
+
   return (
     <div className="grid grid-cols-3 gap-4 mb-8">
       <div className="bg-darkOrange/5 border border-darkOrange/20 rounded-2xl p-5 text-center">
         <BsStarFill className="text-darkOrange mx-auto mb-2" size={24} />
-        <p className="text-2xl font-bold text-darkGreen">{progress.totalXP}</p>
+        <p className="text-2xl font-bold text-darkGreen flex items-center justify-center gap-2">
+          {displayXP}
+          {xpLoading && (
+            <span
+              aria-label="Actualizando balance on-chain"
+              role="status"
+              className="inline-block w-3.5 h-3.5 border-2 border-darkOrange/30 border-t-darkOrange rounded-full animate-spin"
+            />
+          )}
+        </p>
         <p className="text-xs text-darkGrey">
           de {maxXP} XP
         </p>

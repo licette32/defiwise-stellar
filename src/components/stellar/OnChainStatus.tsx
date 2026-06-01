@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import { useStellarProgress } from "@/hooks/useStellarProgress";
 import { useHydrated } from "@/lib/hydration";
 import { BsLink45Deg, BsArrowRepeat } from "react-icons/bs";
@@ -13,14 +12,10 @@ export function OnChainStatus() {
     historicalXP,
     loading,
     error,
+    // The balance auto-fetches on connect via the hook; this is exposed so the
+    // user can manually re-sync with the contract.
     fetchOnChainProgress,
   } = useStellarProgress();
-
-  useEffect(() => {
-    if (connected) {
-      fetchOnChainProgress();
-    }
-  }, [connected, fetchOnChainProgress]);
 
   if (!isHydrated || !connected) {
     return (
