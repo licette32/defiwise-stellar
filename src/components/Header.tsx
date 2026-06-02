@@ -4,7 +4,38 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { BsStarFill } from "react-icons/bs";
 import { ConnectWalletButton } from "@/components/stellar/ConnectWalletButton";
+import { useStellarProgress } from "@/hooks/useStellarProgress";
+
+/**
+ * Compact, real-time XP indicator for the Header. The balance is read directly
+ * from the Soroban XP Token contract (balanceOf), so it cannot be faked from
+ * the browser dev tools. A subtle spinner is shown while it refreshes.
+ */
+function HeaderXPBadge() {
+  const { isHydrated, connected, xpBalance, loading } = useStellarProgress();
+
+  if (!isHydrated || !connected) return null;
+
+  return (
+    <span
+      title="XP on-chain"
+      className="flex items-center gap-1.5 bg-lightYellow text-darkOrange text-sm font-medium px-3 py-1 rounded-full"
+    >
+      <BsStarFill size={12} />
+      {loading ? (
+        <span
+          aria-label="Actualizando balance on-chain"
+          role="status"
+          className="inline-block w-3 h-3 border-2 border-darkOrange/30 border-t-darkOrange rounded-full animate-spin"
+        />
+      ) : (
+        <span>{xpBalance.toString()} XP</span>
+      )}
+    </span>
+  );
+}
 
 const menuLinks = [
   { label: "Beneficios", href: "/#advantages" },
@@ -53,7 +84,8 @@ export function Header() {
             <ul className="flex items-center gap-1">
               <HeaderMenuLinks />
             </ul>
-            <div className="ml-6">
+            <div className="ml-6 flex items-center gap-3">
+              <HeaderXPBadge />
               <ConnectWalletButton />
             </div>
           </nav>
@@ -77,7 +109,8 @@ export function Header() {
             <ul className="flex flex-col gap-1">
               <HeaderMenuLinks onClick={() => setIsOpen(false)} />
             </ul>
-            <div className="mt-4">
+            <div className="mt-4 flex flex-col gap-3">
+              <HeaderXPBadge />
               <ConnectWalletButton />
             </div>
           </div>

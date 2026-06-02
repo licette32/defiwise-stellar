@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildRewardQuizArgs, buildMintBadgeArgs } from './stellar';
+import { buildRewardQuizArgs, buildMintBadgeArgs, computeXPPercent } from './stellar';
 import * as StellarSdk from '@stellar/stellar-sdk';
 
 describe('stellar validations', () => {
@@ -54,6 +54,31 @@ describe('stellar validations', () => {
       const args = buildMintBadgeArgs('GASHSELFFKPP5BTMD73FBODXO65MLGP4JCRIXQNEM3RYCWMRKSGOUVHC', 'mod1', 'Title', 50, 100);
       expect(args.length).toBe(5);
       expect(args[0]).toBeInstanceOf(StellarSdk.xdr.ScVal);
+    });
+  });
+
+  describe('computeXPPercent (on-chain progress)', () => {
+    it('returns 0 when maxXP is zero or negative', () => {
+      expect(computeXPPercent(BigInt(100), 0)).toBe(0);
+      expect(computeXPPercent(BigInt(100), -5)).toBe(0);
+    });
+
+    it('returns 0 for zero or negative xp', () => {
+      expect(computeXPPercent(BigInt(0), 200)).toBe(0);
+      expect(computeXPPercent(-50, 200)).toBe(0);
+    });
+
+    it('computes the correct percentage from a bigint balance', () => {
+      expect(computeXPPercent(BigInt(100), 200)).toBe(50);
+      expect(computeXPPercent(BigInt(50), 200)).toBe(25);
+    });
+
+    it('accepts plain numbers too', () => {
+      expect(computeXPPercent(150, 200)).toBe(75);
+    });
+
+    it('clamps to 100 when xp exceeds maxXP', () => {
+      expect(computeXPPercent(BigInt(500), 200)).toBe(100);
     });
   });
 });

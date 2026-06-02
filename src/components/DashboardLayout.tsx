@@ -3,17 +3,45 @@
 import { ReactNode } from "react";
 import AsideMenu from "@/components/asideMenu/AsideMenu";
 import { useProgress } from "@/hooks/useProgress";
+import { useStellarProgress } from "@/hooks/useStellarProgress";
 import { courses } from "@/data/courses";
 import { BsPatchCheckFill, BsTrophy, BsStarFill } from "react-icons/bs";
 import { OnChainStatus } from "@/components/stellar/OnChainStatus";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { computeXPPercent } from "@/lib/stellar";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { totalXP, completedModules, isHydrated } = useProgress();
+  const { completedModules, isHydrated } = useProgress();
+  // Real, tamper-proof XP balance read straight from the Soroban XP Token
+  // contract (balanceOf / historicalBalance). The progress widget no longer
+  // trusts the localStorage value, which could be edited from dev tools.
+  const {
+    connected,
+    xpBalance,
+    historicalXP,
+    loading: xpLoading,
+  } = useStellarProgress();
+
   const course = courses[0];
   const totalModules = course.modules.length;
 
-  const displayXP = isHydrated ? totalXP : 0;
+  // Maximum XP achievable across every module of every learning path. Used to
+  // derive the progress percentage from on-chain data.
+  const maxXP = courses.reduce(
+    (sum, c) => sum + c.modules.reduce((s, m) => s + m.rewardXP, 0),
+    0
+  );
+
+  // On-chain XP balance shown in the header/progress widget. Falls back to 0
+  // before hydration or when no wallet is connected.
+  const displayXP =
+    isHydrated && connected ? xpBalance.toString() : "0";
+
+  // Percentage is based on the connected wallet's permanent historical XP so
+  // the bar never shrinks if tokens are spent/burned.
+  const xpPercent = computeXPPercent(historicalXP, maxXP);
+  const displayPercent = isHydrated && connected ? xpPercent : 0;
+
   const displayCompleted = isHydrated ? completedModules : 0;
 
   return (
@@ -36,8 +64,18 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <BsStarFill className="text-darkOrange" size={18} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-darkGreen">{displayXP}</p>
-                <p className="text-xs text-darkGrey">XP totales</p>
+                <p className="text-2xl font-bold text-darkGreen flex items-center gap-2">
+                  {displayXP}
+                  {/* Subtle spinner while the real on-chain balance is loading */}
+                  {xpLoading && (
+                    <span
+                      aria-label="Actualizando balance on-chain"
+                      role="status"
+                      className="inline-block w-3.5 h-3.5 border-2 border-darkOrange/30 border-t-darkOrange rounded-full animate-spin"
+                    />
+                  )}
+                </p>
+                <p className="text-xs text-darkGrey">XP on-chain</p>
               </div>
             </div>
 
@@ -53,12 +91,15 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
 
+            {/* Progress bar derived from the connected wallet's on-chain XP */}
+            <div className="flex justify-between text-xs text-darkGrey mb-1">
+              <span>Progreso XP</span>
+              <span>{displayPercent}%</span>
+            </div>
             <div className="w-full bg-progressGrey rounded-full h-2">
               <div
                 className="bg-active h-2 rounded-full transition-all"
-                style={{
-                  width: `${totalModules > 0 ? (displayCompleted / totalModules) * 100 : 0}%`,
-                }}
+                style={{ width: `${displayPercent}%` }}
               />
             </div>
           </article>

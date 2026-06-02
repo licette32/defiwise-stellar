@@ -131,6 +131,23 @@ export async function queryContract(
   return successResponse.result?.retval;
 }
 
+// ─── Pure helpers (no network) ───
+
+/**
+ * Compute a 0–100 progress percentage from an on-chain XP value relative to the
+ * maximum achievable XP. Always derived from contract data, never localStorage.
+ * Clamps to the [0, 100] range and is resilient to bigint inputs.
+ */
+export function computeXPPercent(
+  xp: bigint | number,
+  maxXP: number
+): number {
+  if (!maxXP || maxXP <= 0) return 0;
+  const xpNum = typeof xp === "bigint" ? Number(xp) : xp;
+  if (!Number.isFinite(xpNum) || xpNum <= 0) return 0;
+  return Math.min(100, Math.max(0, Math.round((xpNum / maxXP) * 100)));
+}
+
 // ─── Helper functions for specific contract calls ───
 
 /**
