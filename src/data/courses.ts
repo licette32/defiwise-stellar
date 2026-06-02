@@ -346,6 +346,167 @@ Stellar ya era excelente para pagos rápidos. Con Soroban, ahora permite crear p
           },
         ],
       },
+      {
+        id: "mod-3",
+        title: "El Valor del Dinero en el Tiempo y la Inflación",
+        description:
+          "Entendé por qué el dinero pierde valor y cómo DeFi te protege.",
+        color: "darkOrange",
+        rewardXP: 150,
+        nftImage: "/nft/nft3.svg",
+        lessons: [
+          {
+            id: "les-3-1",
+            title: "¿Qué es la inflación y el poder adquisitivo?",
+            description:
+              "Entendé por qué tu plata vale menos cada año y cómo el sistema financiero tradicional te come el poder de compra.",
+            durationMinutes: 10,
+            content: `## ¿Qué es la inflación?
+La inflación es el aumento generalizado de precios. Suena simple, pero sus efectos son profundos. Cuando los precios suben, cada peso que tenés compra menos cosas que antes. Eso es, justamente, la pérdida de poder adquisitivo.
+
+### Un ejemplo concreto
+Si hace dos años un café salía $200 y hoy sale $400, tu poder adquisitivo se redujo a la mitad para ese café. No es que el café sea "más caro" en términos absolutos — es que tu moneda vale menos.
+
+Argentina es un caso extremo, pero esto pasa en todo el mundo. La diferencia es la velocidad. En países con inflación alta, perdés poder de compra semana a semana. En países con inflación "baja" (2-3% anual), la pérdida es más lenta, pero igual existe.
+
+### ¿Por qué existe la inflación?
+Hay varias causas, pero las principales son:
+
+- **Emisión monetaria** — Cuando se imprime más plata sin que crezca la producción, cada billete existente vale menos.
+- **Aumento de costos** — Si la energía, los salarios o las materias primas suben, los productos finales también suben.
+- **Expectativas** — Si todos esperan inflación, ajustan precios "por las dudas" y terminan creando la inflación que esperaban.
+
+### ¿Qué tiene que ver DeFi con todo esto?
+En el sistema tradicional, tu plata en el banco o "debajo del colchón" pierde valor silenciosamente. Un plazo fijo tradicional rinde menos que la inflación en la mayoría de los países, así que aunque veas números más altos en tu cuenta, estás perdiendo poder adquisitivo.
+
+DeFi te da herramientas para escapar de esto:
+
+- **Stablecoins** como USDC te permiten mantener valor en dólares digitales.
+- **Protocolos de lending** te pagan interés real por prestar tus activos.
+- **Yield farming** busca los mejores rendimientos de forma automática.
+
+No es magia — son contratos inteligentes que crean mercados de capital más eficientes, sin un banco que se quede con la diferencia.`,
+          },
+          {
+            id: "les-3-2",
+            title: "Tasas de interés: Simple vs. Compuesto",
+            description:
+              "La diferencia entre poner a trabajar tu dinero y hacer que tus ganancias se multipliquen solas.",
+            durationMinutes: 10,
+            content: `## Tasas de interés: Simple vs. Compuesto
+El interés es el precio del dinero. Cuando prestás plata o la invertís, el interés es tu recompensa por permitir que otros la usen. Pero no todo el interés es igual.
+
+### Interés Simple
+El interés simple se calcula siempre sobre el monto original. Es lineal, predecible... y mucho menos poderoso.
+
+Si invertís $1000 al 10% anual durante 3 años con interés simple:
+- Año 1: ganás $100 → total $1100
+- Año 2: ganás $100 → total $1200
+- Año 3: ganás $100 → total $1300
+
+Ganaste $300 en total. No está mal, pero...
+
+### Interés Compuesto
+El interés compuesto se calcula sobre el monto acumulado. Es decir, ganás interés sobre los intereses que ya ganaste. Con el tiempo, esto crece como una bola de nieve.
+
+Con los mismos $1000 al 10% anual compuesto durante 3 años:
+- Año 1: $1000 + 10% = $1100
+- Año 2: $1100 + 10% = $1210
+- Año 3: $1210 + 10% = $1331
+
+Ganaste $331. Solo $31 más que con interés simple, pero la diferencia explota con el tiempo.
+
+### El poder del tiempo
+**A 10 años con interés compuesto al 10%:**
+$1000 se convierten en $2593. Con interés simple serían $2000.
+
+**A 20 años:**
+$1000 se convierten en $6727. Con interés simple serían $3000.
+
+Los matemáticos llaman a esto "crecimiento exponencial". La famosa frase sobre el interés compuesto como la octava maravilla del mundo puede ser o no de Einstein, pero el concepto es real: el tiempo es tu mejor aliado cuando trabajás con interés compuesto.
+
+### ¿Y cómo aplica esto en DeFi?
+Los protocolos de DeFi usan interés compuesto de forma nativa:
+
+- En Aave o Compound, tus depósitos generan interés que se reinvierte automáticamente en cada bloque de la blockchain.
+- En el staking de redes como Ethereum o Solana, las recompensas se acumulan y se componen automáticamente con el tiempo.
+- Los yield aggregators buscan las mejores tasas compuestas de forma automática por vos.
+
+En el sistema tradicional, tenés que reinvertir manualmente tus ganancias o aceptar tasas miserables. En DeFi, la composición es automática y transparente. Tu plata trabaja 24/7, incluso mientras dormís.`,
+          },
+        ],
+        quiz: [
+          {
+            id: "q-3-1",
+            prompt: "¿Qué es la inflación?",
+            options: [
+              {
+                text: "Una suba generalizada de precios que reduce el poder adquisitivo de tu dinero",
+                isCorrect: true,
+              },
+              {
+                text: "Un fenómeno que solo pasa en países como Argentina",
+                isCorrect: false,
+              },
+              {
+                text: "Cuando los salarios suben más rápido que los precios",
+                isCorrect: false,
+              },
+              {
+                text: "Una política del banco central para aumentar el ahorro",
+                isCorrect: false,
+              },
+            ],
+          },
+          {
+            id: "q-3-2",
+            prompt:
+              "¿Cuál es la principal diferencia entre interés simple y compuesto?",
+            options: [
+              {
+                text: "El interés compuesto solo aplica a préstamos bancarios",
+                isCorrect: false,
+              },
+              {
+                text: "En el simple ganás sobre el capital original; en el compuesto ganás sobre el capital más los intereses acumulados",
+                isCorrect: true,
+              },
+              {
+                text: "El interés simple es más rentable a largo plazo",
+                isCorrect: false,
+              },
+              {
+                text: "No hay diferencia, son lo mismo calculado de formas distintas",
+                isCorrect: false,
+              },
+            ],
+          },
+          {
+            id: "q-3-3",
+            prompt:
+              "¿Cómo ayuda DeFi a combatir la pérdida de poder adquisitivo causada por la inflación?",
+            options: [
+              {
+                text: "Imprimiendo más monedas estables",
+                isCorrect: false,
+              },
+              {
+                text: "Congelando los precios de los bienes en la blockchain",
+                isCorrect: false,
+              },
+              {
+                text: "Ofreciendo herramientas como stablecoins, lending y yield farming que generan rendimientos reales sobre tus activos",
+                isCorrect: true,
+              },
+              {
+                text: "Eliminando la inflación por completo gracias a la tecnología blockchain",
+                isCorrect: false,
+              },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
+
