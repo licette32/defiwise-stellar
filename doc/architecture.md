@@ -469,7 +469,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | |
 |---|---|
-| **Effort** | < 1 day |
 | **Risk** | Very low — it's a thin wrapper over the current code |
 | **Hackathon value** | Low on its own, but a prerequisite baseline that signals production intent |
 | **Con** | Alone it is not a meaningful integration depth point — it should accompany another integration |
@@ -486,7 +485,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | |
 |---|---|
-| **Effort** | < 1 day (Privy has a Stellar SDK, integration is a few dozen lines) |
 | **Risk** | Dependency on a hosted third-party service. Privy signs transactions server-side for the user, so the admin signer and user signer remain separate and clean. |
 | **Hackathon value** | High — directly expands the addressable user base and validates customer discovery ("learners don't have wallets yet") |
 | **Con** | Adds an external auth dependency; Privy accounts are not portable to other Stellar apps by default |
@@ -503,7 +501,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | Soroswap | Aquarius |
 |---|---|---|
-| **Effort** | 1-2 weeks | < 1 day (routing API) |
 | **Risk** | Testnet liquidity can be thin | Same |
 | **Hackathon value** | High — directly integrates a live Stellar DeFi protocol into the curriculum | Medium-high |
 | **Con** | Requires a new module or lesson rewrite; testnet token availability | Less documentation than Soroswap |
@@ -522,7 +519,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | |
 |---|---|
-| **Effort** | 1-2 weeks for full testnet integration; 2-3 days for read-only yield display |
 | **Risk** | Etherfuse testnet availability; yield data freshness |
 | **Hackathon value** | Very high — thematic alignment with LATAM pain point + live data + testnet interaction |
 | **Con** | Stablebonds are a niche product; not all users in the target audience will be familiar with bonds |
@@ -539,7 +535,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | |
 |---|---|
-| **Effort** | 1-2 weeks |
 | **Risk** | Integration complexity; DeFindex vault UX is more complex than a swap |
 | **Hackathon value** | High — integrates a Stellar-native protocol, adds a new course module, shows curriculum depth |
 | **Con** | Harder to explain to a newcomer student; may not align with beginner-level content |
@@ -556,7 +551,6 @@ The PULSO judging criteria weights **integration depth and technical complexity*
 
 | | |
 |---|---|
-| **Effort** | 2-3 weeks (CDP mechanics are more complex to surface safely in a learning context) |
 | **Risk** | Explaining liquidation risk in an educational context; testnet XLM availability for collateral |
 | **Hackathon value** | Medium-high — interesting primitive but more complex to demo clearly |
 | **Con** | Risk of confusing beginners; probably better as an advanced module |
